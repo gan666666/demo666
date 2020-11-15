@@ -1,0 +1,106 @@
+import java.awt.*;
+import java.awt.event.*;
+public class Jisuanqi extends WindowAdapter {
+    Panel p1 = new Panel();
+    Panel p2 = new Panel();
+    Panel p3 = new Panel();
+    TextField txt;
+    private Button[] b = new Button[17];
+    private String ss[] = { "7", "8", "9", "+", "4", "5", "6", "-", "1", "2",
+            "3", "*", "清空", "0", "=", "/", "关闭" };
+    static double a;
+    int num;
+    static String s, str;// 定义变bai量 创建对像
+    public static void main(String args[]) {
+        (new Jisuanqi()).frame();
+    }
+    public void frame() {
+        Frame fm = new Frame("简单计算器");
+        for (int i = 0; i <= 16; i++) {
+            b[i] = new Button(ss[i]);
+        }
+        for (int i = 0; i <= 15; i++) {
+            p2.add(b[i]);
+        }
+        fm.setBounds(300, 200, 200, 200);
+// 创建按钮 并添加到P2
+        txt = new TextField(15);
+        txt.setEditable(false);
+        for (int i = 0; i <= 16; i++) {
+            b[i].addActionListener(new buttonlistener());// 添加监听器
+        }
+        b[16].addActionListener(new close());
+        fm.addWindowListener(this);
+// fm.setBackground(Color.red);
+        p1.setLayout(new BorderLayout());
+        p1.add(txt, "Center");
+        p2.setLayout(new GridLayout(4, 4));
+        p3.setLayout(new BorderLayout());
+        p3.add(b[16]);
+        fm.add(p1, "North");
+        fm.add(p2, "Center");
+        fm.add(p3, "South");
+        fm.pack();
+        fm.setVisible(true);// 都是些窗中设置 添加相关组件和监听器
+    }
+    public void windowClosing(WindowEvent e) {
+        System.exit(0);// 退出系统
+    }
+    class buttonlistener implements ActionListener {// 编写监听器事件 通过按键得出给果
+        public void actionPerformed(ActionEvent e) {
+            Button btn = (Button) e.getSource();
+            if (btn.getLabel() == "=") {
+                if (!txt.getText().equals(""))
+                    jisuan();
+                str = String.valueOf(num);
+                txt.setText(str);
+                s = "";
+            } else if (btn.getLabel() == "+") {
+                jisuan();
+                txt.setText("");
+                s = "+";
+            } else if (btn.getLabel() == "-") {
+                jisuan();
+                txt.setText("");
+                s = "-";
+            } else if (btn.getLabel() == "/") {
+                jisuan();
+                txt.setText("");
+                s = "/";
+            } else if (btn.getLabel() == "*") {
+                jisuan();
+                txt.setText("");
+                s = "*";
+            } else {
+                txt.setText(txt.getText() + btn.getLabel());
+                if (btn.getLabel() == "清空")
+                    txt.setText("");
+            }
+        }
+        public void jisuan() {// 编写具体计算方法
+            if (s == "+") {
+                a += Double.parseDouble(txt.getText());
+                num = (int) a;
+            } else if (s == "-")
+            {a -= Double.parseDouble(txt.getText());
+                num = (int) a;}
+            else if (s == "*")
+            {a *= Double.parseDouble(txt.getText());
+                num = (int) a;
+            }
+            else if (s == "/"){
+                a /= Double.parseDouble(txt.getText());
+                num = (int) a;}
+            else
+                a = Double.parseDouble(txt.getText());
+            num = (int) a;
+        }
+    }
+}
+class close implements ActionListener {// 退出
+    public void actionPerformed(ActionEvent e) {
+        System.exit(0);
+    }
+}
+
+
